@@ -1,6 +1,7 @@
 package battleship;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class gameboard {
     int BOARD_SIZE;
@@ -17,7 +18,7 @@ public void setboard() {
 }
 	
 private void fillboard() {
-	// initializing both the board and ship array to -1
+	// initializing both the board and ship array to ~
 	for(int i = 0; i < this.BOARD_SIZE; i++) {
 		for (int j = 0; j < this.BOARD_SIZE; j++) {
 			board[i][j] = '~';
@@ -28,9 +29,10 @@ private void fillboard() {
 
 
 public void printboard() {
-	// for printing the top column of the game board going to the right
+	setboard();
 	System.out.printf("%nBoard size is: %dx%d%n", this.BOARD_SIZE, this.BOARD_SIZE);
-	System.out.print("\n   ");
+	// for printing the top column of the game board going to the right with some extra space
+	System.out.print("\n  ");
 	for (int i = 0; i < this.BOARD_SIZE; i++) {
 		System.out.printf("%3d", i+1);	
 	}
@@ -40,7 +42,8 @@ public void printboard() {
 		System.out.print("\n");
 		System.out.printf("%3c", getLetter(i+1));
 		for (int j = 0; j < this.BOARD_SIZE; j++) {
-			System.out.printf("%3c", board[i][j]);
+			System.out.printf("%2c", board[i][j]);
+			System.out.print("|");
             }
             
     }
