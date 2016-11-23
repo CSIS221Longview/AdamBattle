@@ -40,7 +40,7 @@ public void printboard() {
 		System.out.print("\n");
 		System.out.printf("%3c", getLetter(i+1));
 		for (int j = 0; j < this.BOARD_SIZE; j++) {
-			
+			System.out.printf("%3c", board[i][j]);
             }
             
     }
