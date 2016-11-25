@@ -12,10 +12,7 @@ public class gameboard {
     private static final int DESTROYER = 3;
     private static final int SUBMARINE = 3;
     private static final int PATROL = 2;
-    static char water = '~';
-    static char miss = '*';
-    static char hit = 'X';
-    static char ship = 'S';
+   
 	
 	int [][] board;
 	int [] ships = new int[5];
@@ -46,6 +43,14 @@ private void fillboard() {
 
 
 public void printboard() {
+	 char water = '~';
+	 char miss = '*';
+	 char hit = 'X';
+	 char air_carrier = 'A';
+	 char battleship = 'B';
+	 char destroyer = 'D';
+	 char sub = 'S';
+	 char patrol = 'P';
 	// printout for each turn indicating missiles left, ships still floating
 	System.out.println("--------------------------------------------");
 	System.out.printf("Board size is: %dx%d%n", this.BOARD_SIZE, this.BOARD_SIZE);
@@ -70,7 +75,15 @@ public void printboard() {
 			else if (board[i][j] == 1)
 				System.out.printf("%2c", hit);
 			else if (board[i][j] == -3)
-				System.out.printf("%2c", ship);
+				System.out.printf("%2c", air_carrier);
+			else if (board[i][j] == -4)
+				System.out.printf("%2c", battleship);
+			else if (board[i][j] == -5)
+				System.out.printf("%2c", destroyer);
+			else if (board[i][j] == -6)
+				System.out.printf("%2c", sub);
+			else if (board[i][j] == -7)
+				System.out.printf("%2c", patrol);
 			System.out.print("|");
             }
             
@@ -86,7 +99,10 @@ public void setShips() {
 		coordX = rand.nextInt(this.BOARD_SIZE);
 		coordY= rand.nextInt(this.BOARD_SIZE);
 		int shiplength = ships[ship];
+		int shipChar = ship;
 		
+		
+	
 		if (board[coordX][coordY] != -1)
 			continue;
 		
@@ -95,20 +111,47 @@ public void setShips() {
 			if (shiplength + coordX > this.BOARD_SIZE)
 				continue;
 			for (int i = 0; i < shiplength; i++) {
-				board[coordX + i][coordY] = -3;
-				}
+				// switch statement for setting the value of the ship for printing
+				// -3 = aircraft carrier
+				// -4 = battleship
+				// -5 = destroyer
+				// -6 = submarine
+				// -7 = patrol boat
+				if (shipChar == 0) 
+					board[coordX + i][coordY] = -3;
+				else if (shipChar == 1)
+					board[coordX + i][coordY] = -4;
+				else if (shipChar == 2)
+					board[coordX + i][coordY] = -5;
+				else if (shipChar == 3)
+					board[coordX + i][coordY] = -6;
+				else if (shipChar == 4)
+					board[coordX + i][coordY] = -7;
+				
 			}
+		}
 					
 			// Vertical placement if direction = 2
 		else if (direction == 2) {
 			if (shiplength + coordY > this.BOARD_SIZE)
 				continue;
 			for (int i = 0; i < shiplength; i++) {
-				board[coordX][coordY + i] = -3;
+				if (shipChar == 0) 
+					board[coordX + i][coordY] = -3;
+				else if (shipChar == 1)
+					board[coordX + i][coordY] = -4;
+				else if (shipChar == 2)
+					board[coordX + i][coordY] = -5;
+				else if (shipChar == 3)
+					board[coordX + i][coordY] = -6;
+				else if (shipChar == 4)
+					board[coordX + i][coordY] = -7;
+				}
 				}	
 			}
+		
 	}
-}
+
 
 // converting the initial column for printing to letters
 public char getLetter(int i){
