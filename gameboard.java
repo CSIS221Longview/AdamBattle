@@ -101,16 +101,13 @@ public void setShips() {
 		coordY= rand.nextInt(this.BOARD_SIZE);
 		int shiplength = ships[ship];
 		int shipChar = ship;
-		
-		
 	
 		if (board[coordX][coordY] != -1)
 			continue;
-		
+		if (shiplength + coordX > this.BOARD_SIZE - 1)
+			continue;
 			// Horizontal placement if direction = 1
 		if (direction == 1) {
-			if (shiplength + coordX > this.BOARD_SIZE)
-				continue;
 			for (int i = 0; i < shiplength; i++) {
 				// if else statement for setting the value of the ship for printing
 				// -3 = aircraft carrier
@@ -131,11 +128,11 @@ public void setShips() {
 				
 			}
 		}
-					
+			
+		if (shiplength + coordY > this.BOARD_SIZE - 1)
+			continue;
 			// Vertical placement if direction = 2
 		else if (direction == 2) {
-			if (shiplength + coordY > this.BOARD_SIZE)
-				continue;
 			for (int i = 0; i < shiplength; i++) {
 				// if else statement for setting the value of the ship for printing
 				// -3 = aircraft carrier
@@ -144,15 +141,15 @@ public void setShips() {
 				// -6 = submarine
 				// -7 = patrol boat
 				if (shipChar == 0) 
-					board[coordX + i][coordY] = -3;
+					board[coordX][coordY + i] = -3;
 				else if (shipChar == 1)
-					board[coordX + i][coordY] = -4;
+					board[coordX][coordY + i] = -4;
 				else if (shipChar == 2)
-					board[coordX + i][coordY] = -5;
+					board[coordX][coordY + i] = -5;
 				else if (shipChar == 3)
-					board[coordX + i][coordY] = -6;
+					board[coordX][coordY + i] = -6;
 				else if (shipChar == 4)
-					board[coordX + i][coordY] = -7;
+					board[coordX][coordY + i] = -7;
 				}
 				}	
 			}
