@@ -74,6 +74,7 @@ public void printboard() {
 				System.out.printf("%2c", miss);
 			else if (board[i][j] == 1)
 				System.out.printf("%2c", hit);
+			// the rest are just for testing purposes only, will remove once the program is done
 			else if (board[i][j] == -3)
 				System.out.printf("%2c", air_carrier);
 			else if (board[i][j] == -4)
@@ -111,7 +112,7 @@ public void setShips() {
 			if (shiplength + coordX > this.BOARD_SIZE)
 				continue;
 			for (int i = 0; i < shiplength; i++) {
-				// switch statement for setting the value of the ship for printing
+				// if else statement for setting the value of the ship for printing
 				// -3 = aircraft carrier
 				// -4 = battleship
 				// -5 = destroyer
@@ -136,6 +137,12 @@ public void setShips() {
 			if (shiplength + coordY > this.BOARD_SIZE)
 				continue;
 			for (int i = 0; i < shiplength; i++) {
+				// if else statement for setting the value of the ship for printing
+				// -3 = aircraft carrier
+				// -4 = battleship
+				// -5 = destroyer
+				// -6 = submarine
+				// -7 = patrol boat
 				if (shipChar == 0) 
 					board[coordX + i][coordY] = -3;
 				else if (shipChar == 1)
