@@ -15,6 +15,7 @@ public class gameboard {
     static char water = '~';
     static char miss = '*';
     static char hit = 'X';
+    static char ship = 'S';
 	
 	int [][] board;
 	int [] ships = new int[5];
@@ -22,13 +23,13 @@ public class gameboard {
 
 public void setboard() {
 	// setting the array size depending on the game difficulty
-	board = new int[BOARD_SIZE][BOARD_SIZE];
-	fillboard();
+	board = new int[BOARD_SIZE][BOARD_SIZE];	
 	ships[0] = AIRCRAFT_CARRIER;
 	ships[1] = BATTLESHIP;
 	ships[2] = DESTROYER;
 	ships[3] = SUBMARINE;
 	ships[4] = PATROL;
+	fillboard();
 }
 
 	
@@ -68,6 +69,8 @@ public void printboard() {
 				System.out.printf("%2c", miss);
 			else if (board[i][j] == 1)
 				System.out.printf("%2c", hit);
+			else if (board[i][j] == -3)
+				System.out.printf("%2c", ship);
 			System.out.print("|");
             }
             
