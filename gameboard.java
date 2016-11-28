@@ -113,8 +113,20 @@ public class gameboard {
 			for (int j = 0; j < getBoardSize(); j++) {
 				if (board[i][j] == -1)
 					System.out.printf("%3c", water);
+				// 
+				// FOR TEST PRINTING ONLY, WILL COMMENT OUT LATER
+				//
 				if (board[i][j] == -3)
-					System.out.printf("%3c", ship);
+					System.out.printf("%3s", ships[0].icon);
+				if (board[i][j] == -4)
+					System.out.printf("%3s", ships[1].icon);
+				if (board[i][j] == -5)
+					System.out.printf("%3s", ships[2].icon);
+				if (board[i][j] == -6)
+					System.out.printf("%3s", ships[3].icon);
+				if (board[i][j] == -7)
+					System.out.printf("%3s", ships[4].icon);
+
 				
 				System.out.print("|");
 			}
@@ -125,7 +137,7 @@ public class gameboard {
 	public class shipInfo {
 		public String name = "";
 		public String icon = "";
-		public int length = 0;
+		public int size = 0;
 		public int value = 0;
 		
 		public String getName() {
@@ -136,8 +148,8 @@ public class gameboard {
 			return icon;
 		}
 		
-		public int getLength() {
-			return length;
+		public int getSize() {
+			return size;
 		}
 		
 		public int getValue() {
@@ -158,11 +170,11 @@ public class gameboard {
 		ships[3].name = "Submarine";
 		ships[4].name = "Patrol Boat";
 		
-		ships[0].length = 5;
-		ships[1].length = 4;
-		ships[2].length = 4;
-		ships[3].length = 3;
-		ships[4].length = 2;
+		ships[0].size = 5;
+		ships[1].size = 4;
+		ships[2].size = 4;
+		ships[3].size = 3;
+		ships[4].size = 2;
 		
 		ships[0].icon = "A";
 		ships[1].icon = "B";
@@ -179,35 +191,69 @@ public class gameboard {
 	
 	public void placeShips() {
 		createShips();
-		int size = getBoardSize();
-		for (int i = 0; i < ships.length; i++) {
-			int direction = r.nextInt(2);
+		int size = getBoardSize();	
+		int shipIcon = -3;
+		for (int i = 0; i < ships.length; i++) {	
+		boolean shipPlaced = false;
+		
+		while (!shipPlaced) {
+			boolean placeHorizontal = r.nextBoolean();
 			int row = r.nextInt(size);
 			int col = r.nextInt(size);
 			
 			if (board[row][col] != -1)
 				continue;
-			
-			// HORIZONTAL
-			if (direction == 0) {
-					if (row + ships[i].length > size || row - ships[i].length < 0)
-						continue;
-					for (int j = 0; j < ships[i].length; j++) {
-						board[row + j][col] = -3;
-					}
-			}
-			// VERTICAL	
-			else if (direction == 1) {
-				if (col + ships[i].length > size || col - ships[i].length < 0)
-					continue;
-				for (int j = 0; j < ships[i].length; j++) {
-					board[row][col + j] = -3;
+
+			if (placeHorizontal) { // if ship was placed horizontal
+				boolean spaceFree = true;
+				
+			    for (int j = 0; j < ships[i].size; j++) {
+			      // check to see if your int[][] board has free spaces
+			      // if at any point there isn't free space.
+			    	if (row + ships[i].size > size) 
+				    	spaceFree = false;
+			    }
+
+			    if (!spaceFree)
+			      continue; // This will go to the next iteration of your while loop. (Generate a new position for the ship.)
+			    
+			    
+			    for (int j = 0; j < ships[i].size; j++) {
+			    	
+					board[row + j][col] = shipIcon;
+				
 				}
+			    // Your code will only get to here if it can be placed here.
+			    // place the ship at that location.
+			    shipPlaced = true;
+			  } 
+			else { // If your ship was placed vertically.	    
+			    boolean spaceFree = true;
+			    
+			    for (int j = 0; j < ships[i].size; j++) {
+			      if (col + ships[i].size > size)
+			      // if at any point there isn't free space then set spaceFree -> false
+			      spaceFree = false;
+			    }
+
+			    if (!spaceFree)
+			      continue; // This will go to the next iteration of your while loop. (Generate a new position for the ship.)
+				for (int j = 0; j < ships[i].size; j++) {
+					
+					board[row][col + j] = shipIcon;
+					
+				}
+			    // Your code will only get to here if it can be placed here.
+			    // place the ship at that location.
+			    shipPlaced = true;
+			  }
 			}
-		}
-		
-		
+		shipIcon--;
+		}	
+	
 	}
+		
+	
 		
 	// converts the numbers to letters (for the first column going down)
 	public char getLetter(int i){
