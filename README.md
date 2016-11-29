@@ -1,6 +1,7 @@
 # AdamBattle" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/CSIS221Longview/AdamBattle.git
-git push -u origin master
+Almost done with the program now. Things left that I still need to complete:
+
+1. Complete user prompt for attack
+2. Complete ending of the game
+3. Delete unnessesary code
+4. Add more complete/better comments
