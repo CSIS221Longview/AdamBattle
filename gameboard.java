@@ -7,8 +7,8 @@ public class gameboard {
 	Scanner kb = new Scanner(System.in);
 	Random r = new Random();
 	
-	int board[][];
-	shipInfo[] ships = new shipInfo[5];
+	int board[][]; // creating a 2d int array for printing of the game board
+	shipInfo[] ships = new shipInfo[5]; // creating an array of 5 for the 5 ships
 	private int BOARD_SIZE;
 	private int missiles;
 	public int shipsAlive = 5;
@@ -26,31 +26,34 @@ public class gameboard {
 		System.out.print("Select your board size by entering the number 1, 2, or 3:  ");
 		difficulty = kb.nextInt();
 
+		// if they entered a value other than 1, 2, or 3 for the game difficulty, execute the while loop
 		while(difficulty != 1 && difficulty != 2 && difficulty != 3) {
 			System.out.println("\nYou have entered an invalid difficulty entry\n");
 			System.out.print("Select your board size by entering the number 1, 2, or 3:  ");
 			difficulty = kb.nextInt();	
 		}
 		
+		// If they chose 1 = BEGINNER difficulty
 		if (difficulty == 1) {
-			System.out.print("You have chosen beginner.");
-			BOARD_SIZE = 6;
-			missiles = 30; 
+			System.out.print("\nYou have chosen beginner. What a scrub!");
+			BOARD_SIZE = 6; // board size will be 6x6
+			missiles = 30; // they get 30 missiles
 		}
+		// If they chose 2 = STANDARD difficulty
 		else if (difficulty == 2) {
-			System.out.print("You have chosen standard.");
-			BOARD_SIZE = 9;
-			missiles = 50;
+			System.out.print("\nYou have chosen standard. Just a mediocre life.");
+			BOARD_SIZE = 9; // board size will be 9x9
+			missiles = 50; // they get 50 missiles
 		}
-			
+		// If they chose 3 = ADVANCED DIFFICULTY	
 		else if (difficulty == 3) {
-			System.out.print("You have chosen advanced.");
-			BOARD_SIZE = 12;
-			missiles = 75;
+			System.out.print("\nYou have chosen advanced. You must be confident!");
+			BOARD_SIZE = 12; // board size will be 12x12
+			missiles = 75; // they get 75 missiles
 		}
-		setBoardSize();
-		fillBoard();	
-		
+		setBoardSize(); // call setBoardSize() method below to create the 2d int array based on the difficulty the player chose
+		fillBoard(); // call fillBoard() method below to initialize the 2d array
+		System.out.printf("%nGameboard is set to %dx%d%n", getBoardSize(), getBoardSize());
 	}
 	
 	// return the size of the board
@@ -63,7 +66,7 @@ public class gameboard {
 	}
 	
 	public int useMissiles() {
-		return missiles--;
+		return --missiles;
 	}
 
 	// setting the board size to what the player wanted, 6, 9 or 12
@@ -73,7 +76,8 @@ public class gameboard {
 	
 	// initializing the whole board to -1
 	private void fillBoard() {
-		// initializing both the board and ship array to -1
+		// initializing the board array to -1
+		// -1 will equal empty space, aka water on the battleship board
 		for(int i = 0; i < getBoardSize(); i++) {
 			for (int j = 0; j < getBoardSize(); j++) {
 				board[i][j] = -1;
@@ -83,14 +87,14 @@ public class gameboard {
 	
 	// printing of the board
 	public void printBoard() {
-		final char water = '~';
-		final char miss = '*';
-		final char hit = 'X';
+		final char water = '~'; // This will allow all -1 values (water) to output as ~
+		final char miss = '*'; // This will allow all 0 values (miss) to output as *
+		final char hit = 'X';	// This will allow all 1 values (hit) to output as X
 		
 		
 		
-		System.out.println("\n\n----------------------------------------");
-		System.out.printf("Gameboard is set to %dx%d%n", getBoardSize(), getBoardSize());
+		System.out.println("\n----------------------------------------");
+
 		System.out.printf("You have %d missiles left%n", getMissiles());
 		System.out.printf("You have %d ships still alive%n", shipsAlive);
 		
@@ -129,10 +133,9 @@ public class gameboard {
 					System.out.printf("%3s", ships[3].icon);
 				if (board[i][j] == -7)
 					System.out.printf("%3s", ships[4].icon);
-
+				//
 				
 				System.out.print("|");
-				getMissiles();
 			}
 		}
 	}
@@ -143,22 +146,6 @@ public class gameboard {
 		public String icon = "";
 		public int size = 0;
 		public int value = 0;
-		
-		public String getName() {
-			return name;
-		}
-		
-		public String getIcon() {
-			return icon;
-		}
-		
-		public int getSize() {
-			return size;
-		}
-		
-		public int getValue() {
-			return value;
-		}
 	}
 	
 	public void createShips() {
@@ -273,6 +260,26 @@ public class gameboard {
 	
 	}
 		
+	public void gameOverWin() {
+		System.out.println("\n\n");
+		System.out.println("Congratulations! You have sunk all the enemy ships.");
+		System.out.println("----------------------------------------------------");
+		System.out.println("|                                                  |");
+		System.out.println("|         			  YOU WIN!!                    |");
+		System.out.println("|                                       		   |");
+		System.out.println("----------------------------------------------------");
+		
+	}
+	
+	public void gameOverLoss() {
+		System.out.println("\n\n");
+
+		System.out.println("----------------------------------------------------");
+		System.out.println("|                                                  |");
+		System.out.println("|                     YOU LOSE!!                   |");
+		System.out.println("|                       HA HA                      |");
+		System.out.println("----------------------------------------------------");
+	}
 	
 		
 	// converts the numbers to letters (for the first column going down)
@@ -280,6 +287,16 @@ public class gameboard {
 		  return (char) (i + 64);
 		}
 	
+	public static void getLogo() {
+		System.out.println("----------------------------------------------------");
+		System.out.println("|                                                  |");
+		System.out.println("|             WELCOME TO BATTLESHIP                |");
+		System.out.println("|                   WITH JAVA!                     |");
+		System.out.println("|                                                  |");
+		System.out.println("----------------------------------------------------");
+	
+		
+	}
 	
 	
 }
