@@ -3,30 +3,12 @@ package battleship;
 
 public class battleship {
 	public static void main(String[] args) {
-	actiongame action = new actiongame();
+	actiongame action = new actiongame(); // creating a new object of actiongame.java
 	
-	getLogo();
-	action.startGame();
-	action.playGame();
+	gameboard.getLogo(); // get the gameboard logo
+	action.startGame(); // call actiongame.java and start the game
+	action.playGame(); // call actiongame.java and play the game
 	}
-	
-	
-	
-	
-	
-	
-	
-	public static void getLogo() {
-		System.out.println("----------------------------------------------------");
-		System.out.println("|                                                  |");
-		System.out.println("|             WELCOME TO BATTLESHIP                |");
-		System.out.println("|                   WITH JAVA!                     |");
-		System.out.println("|                                                  |");
-		System.out.println("----------------------------------------------------");
-	
-		
-	}
-	
 	
 }
 
