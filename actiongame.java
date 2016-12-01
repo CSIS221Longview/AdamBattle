@@ -22,29 +22,25 @@ public class actiongame {
 		
 		// the following code will execute over and over until gameOver is set to true (when the game ends)
 		do {
+		turns++;	
 		// initializing gameOver to false
 		gameOver = false; 
 		System.out.print("\n\nWhat row do you want to attack? (example: A or b): ");
 		
 		char input = kb.next().charAt(0);
 		input = Character.toUpperCase(input); 
-		// capatalizes the character input for easier conversion to integer
-	
+		// capatalizes the character input for easier conversion to integer	
 		int row = getNumber(input); 
 		// passes the character input to getNumber() to convert the letter to a number for the board[][] array
-		System.out.print("What column do you want to attack? (example: 1 or 5): ");
-		
+		System.out.print("What column do you want to attack? (example: 1 or 5): ");		
 		int col = kb.nextInt() - 1;
 		// subtract 1 so we don't go out of bounds on the board[][] array
-	
 		// pass the converted row and column to fire method to attack the board
 		fire(row, col); 
 		gameboard.useMissiles();
-		turns++;
-		
-		// The hits/turns will be commented out for final product. Just trying to get my accuracy to work :(
-		System.out.printf("%nYou have hit %d ships and had %d turns", hits, turns);
-		System.out.printf("%nYour hit accuracy is %.2f%%", getAccuracy());
+		// 
+		// System.out.printf("%nYou have hit %d ship(s) and had %d turn(s)", hits, turns);
+		System.out.printf("%nYour hit accuracy is %.2f%%", getAccuracy(hits, turns));
 		// call printBoard() from the gameboard.java to re-print the board for another attack
 		gameboard.printBoard();
 		// once the int sunk value hits 0, all ships have been sunk, the player wins, call gameOverWin() from gameboard.java
@@ -135,7 +131,7 @@ public class actiongame {
 	
 	}
 	
-	private double getAccuracy() {
+	private double getAccuracy(double hits, double turns) {
 		double accuracy = (hits / turns) * 100;
 		return accuracy;
 	}
