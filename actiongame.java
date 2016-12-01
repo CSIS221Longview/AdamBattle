@@ -1,10 +1,14 @@
 package battleship;
 import java.util.Scanner;
 
-public class actiongame {
 
-	gameboard gameboard = new gameboard(); // create new object of gameboard.java
+public class actiongame {
+	 // create new object of gameboard.java
+	gameboard gameboard = new gameboard();
 	Scanner kb = new Scanner(System.in);
+	private int hits = 0;
+	private int turns = 0;
+	
 	
 	public void startGame() {
 		gameboard.setDiff(); // call the setDiff() method from gameboard.java
@@ -13,26 +17,34 @@ public class actiongame {
 	}
 	
 	public void playGame() {
-		boolean gameOver; // create a boolean for determing gameover
+		// create a boolean for determing gameover
+		boolean gameOver; 
 		
-			// the following code will execute over and over until gameOver is set to true (when the game ends)
+		// the following code will execute over and over until gameOver is set to true (when the game ends)
 		do {
-			// initializing gameOver to false
+		// initializing gameOver to false
 		gameOver = false; 
 		System.out.print("\n\nWhat row do you want to attack? (example: A or b): ");
 		
-		char input = kb.next().charAt(0); // takes the character input from the player 
-		input = Character.toUpperCase(input); // capatalizes the character input for easier conversion to integer
-		// this is merely a test for uppercase System.out.printf("%nYou have entered %c as your char input", input);
-		
-		
-		int row = getNumber(input); // passes the character input to getNumber() to convert the letter to a number for the board[][] array
+		char input = kb.next().charAt(0);
+		input = Character.toUpperCase(input); 
+		// capatalizes the character input for easier conversion to integer
+	
+		int row = getNumber(input); 
+		// passes the character input to getNumber() to convert the letter to a number for the board[][] array
 		System.out.print("What column do you want to attack? (example: 1 or 5): ");
-		int col = kb.nextInt() - 1; // subtract 1 so we don't go out of bounds on the board[][] array
 		
+		int col = kb.nextInt() - 1;
+		// subtract 1 so we don't go out of bounds on the board[][] array
+	
 		// pass the converted row and column to fire method to attack the board
 		fire(row, col); 
 		gameboard.useMissiles();
+		turns++;
+		
+		// The hits/turns will be commented out for final product. Just trying to get my accuracy to work :(
+		System.out.printf("%nYou have hit %d ships and had %d turns", hits, turns);
+		System.out.printf("%nYour hit accuracy is %.2f%%", getAccuracy());
 		// call printBoard() from the gameboard.java to re-print the board for another attack
 		gameboard.printBoard();
 		// once the int sunk value hits 0, all ships have been sunk, the player wins, call gameOverWin() from gameboard.java
@@ -45,7 +57,7 @@ public class actiongame {
 			gameboard.gameOverLoss();
 			gameOver = true;
 		}
-		} while(!gameOver); // the do, while loop will end when gameOver is true
+		} while(!gameOver); 
 	}
 	
 	
@@ -57,6 +69,7 @@ public class actiongame {
 			// Create an int for ship sinking call sunk. Each time the players attack lands on a -3 value, subtract 1 from the ships size
 			// once the size hits 1, the ship is sunk
 			int sunk = gameboard.ships[0].size--;
+			hits++;
 			System.out.printf("%nYou have hit the %s", gameboard.ships[0].name);
 			// change the value where the player attacked to a 1, meaning a HIT
 			gameboard.board[row][col] = 1;
@@ -68,6 +81,7 @@ public class actiongame {
 		// if the players attack landed on a -4 value, they hit the BATTLESHIP
 		else if (gameboard.board[row][col] == -4) {
 			int sunk = gameboard.ships[1].size--;
+			hits++;
 			System.out.printf("%nYou have hit the %s", gameboard.ships[1].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
@@ -78,6 +92,7 @@ public class actiongame {
 		// if the players attack landed on a -5 value, they hit the DESTROYER
 		else if (gameboard.board[row][col] == -5) {
 			int sunk = gameboard.ships[2].size--;
+			hits++;
 			System.out.printf("%nYou have hit the %s", gameboard.ships[2].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
@@ -88,6 +103,7 @@ public class actiongame {
 		// if the players attack landed on a -6 value, they hit the SUBMARINE
 		else if (gameboard.board[row][col] == -6) {
 			int sunk = gameboard.ships[3].size--;
+			hits++;
 			System.out.printf("%nYou have hit the %s", gameboard.ships[3].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
@@ -98,6 +114,7 @@ public class actiongame {
 		// if the players attack landed on a -7 value, they hit the PATROL_BOAT
 		else if (gameboard.board[row][col] == -7) {
 			int sunk = gameboard.ships[4].size--;
+			hits++;
 			System.out.printf("%nYou have hit the %s", gameboard.ships[4].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
@@ -118,8 +135,12 @@ public class actiongame {
 	
 	}
 	
+	private double getAccuracy() {
+		double accuracy = (hits / turns) * 100;
+		return accuracy;
+	}
 	
-	
+
 	
 	
 	// change the character input for first user attack prompt to a number for the board[][] array
