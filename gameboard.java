@@ -24,8 +24,13 @@ public class gameboard {
 		System.out.println("3. Advanced       12x12              75   ");
 		
 		System.out.print("Select your board size by entering the number 1, 2, or 3:  ");
+		// this will determine if the user entered anything other than an integer number
+		while (!kb.hasNextInt()) {
+			System.out.println("\nYou have entered an a letter.\n");
+			System.out.print("Select your board size by entering the number 1, 2, or 3:  ");
+			kb.next();
+		}
 		difficulty = kb.nextInt();
-
 		// if they entered a value other than 1, 2, or 3 for the game difficulty, execute the while loop
 		while(difficulty != 1 && difficulty != 2 && difficulty != 3) {
 			System.out.println("\nYou have entered an invalid difficulty entry\n");
@@ -97,7 +102,7 @@ public class gameboard {
 
 		System.out.printf("You have %d missiles left%n", getMissiles());
 		System.out.printf("There are %d ship(s) still alive%n", shipsAlive);
-		
+
 		// print out empty space at top left of board
 		System.out.print("\n  ");
 		
@@ -263,7 +268,8 @@ public class gameboard {
 				}
 			  }
 			}
-		// shipIcon starts at -3, assigns the number to that specific board[row][column] per ship
+		// shipIcon starts at -3, assigns the number to that specific board[row][column] per ship, then subtracts to -4 for the next
+		// iteration of the for loop
 		// -3 = AIRCRAFT_CARRIER
 		// -4 = BATTLESHIP
 		// -5 = DESTROYER
