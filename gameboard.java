@@ -61,12 +61,12 @@ public class gameboard {
 		return BOARD_SIZE;
 	}
 	
-	private int getMissiles() {
+	public int getMissiles() {
 		return missiles;
 	}
 	
 	public int useMissiles() {
-		return --missiles;
+		return missiles--;
 	}
 
 	// setting the board size to what the player wanted, 6, 9 or 12
@@ -96,7 +96,7 @@ public class gameboard {
 		System.out.println("\n----------------------------------------");
 
 		System.out.printf("You have %d missiles left%n", getMissiles());
-		System.out.printf("You have %d ships still alive%n", shipsAlive);
+		System.out.printf("There are %d ship(s) still alive%n", shipsAlive);
 		
 		// print out empty space at top left of board
 		System.out.print("\n  ");
@@ -145,7 +145,6 @@ public class gameboard {
 		public String name = "";
 		public String icon = "";
 		public int size = 0;
-		public int value = 0;
 	}
 	
 	public void createShips() {
@@ -155,56 +154,67 @@ public class gameboard {
 		ships[3] = new shipInfo();
 		ships[4] = new shipInfo();
 		
-		ships[0].name = "USS Enterprise (Aircraft Carrier)";
-		ships[1].name = "USS Iowa (Battleship)";
-		ships[2].name = "USS Arlington (Destroyer)";
-		ships[3].name = "USS Alexandria (Submarine)";
-		ships[4].name = "USS Flagstaff (Patrol Boat)";
+		ships[0].name = "USS Enterprise";
+		ships[1].name = "USS Iowa";
+		ships[2].name = "USS Arlington";
+		ships[3].name = "USS Alexandria";
+		ships[4].name = "USS Flagstaff";
 		
-		ships[0].size = 5;
-		ships[1].size = 4;
-		ships[2].size = 4;
-		ships[3].size = 3;
-		ships[4].size = 2;
+		ships[0].size = 5; // Aircraft Carrier is 5 spaces long
+		ships[1].size = 4; // Battleship is 4 spaces long
+		ships[2].size = 4; // Destroyer is 4 spaces long
+		ships[3].size = 3; // Submarine is 3 spaces long
+		ships[4].size = 2; // Patrol Boat is 2 spaces long
 		
-		ships[0].icon = "A";
-		ships[1].icon = "B";
-		ships[2].icon = "D";
-		ships[3].icon = "S";
-		ships[4].icon = "P";
-		
-		ships[0].value = -3;
-		ships[1].value = -4;
-		ships[2].value = -5;
-		ships[3].value = -6;
-		ships[4].value = -7;
+		// THE FOLLOWING WILL BE COMMENTED OUT FOR FINAL GAME
+		// Uncomment the ships[].icon if you want to see the icons print with the board game (for cheating)
+		ships[0].icon = "A"; // A for Aircraft Carrier
+		ships[1].icon = "B"; // B for Battleship
+		ships[2].icon = "D"; // D for Destroyer
+		ships[3].icon = "S"; // S for Submarine
+		ships[4].icon = "P"; // P for Patrol Boat
+
 	}
 	
 	public void placeShips() {
-		createShips();
-		int size = getBoardSize();	
-		int shipIcon = -3;
+		createShips(); // when placeShip() is called in actiongame.java, createShips() will execute and create the ships for the board
+		int size = getBoardSize();	 // assigning the board size to an int value for easier output
+		int shipIcon = -3; // initializing a value to -3 for placement of ships. A counter for -- is at the end of the placeShips() method which will subtract a number
 		
-		
-		for (int i = 0; i < ships.length; i++) {	
+		// The for loop will execute 5 times, the ships[] array is 5 elements long
+		for (int i = 0; i < ships.length; i++) {
+			// initialize a boolean value to false for determing if the ship is placed on the board
 			boolean shipPlaced = false;
-		
+		// since the boolean value is set to false, the following code will execute UNTIL the ship is placed on the board, then it will move to the next iteration of the for loop
 		while (!shipPlaced) {
+			// create a boolean value for determining directional placement of the ship and randomize between true and false
+			// TRUE WILL BE HORIZONTAL
+			// FALSE WILL BE VERTICAL
 			boolean placeHorizontal = r.nextBoolean();
+			// create and randomize two int values based on the size of the gameboard (6, 9 or 12), these two values will be passed to the board[][] array
+			// to determine the starting point of the ship placement
 			int row = r.nextInt(size);
 			int col = r.nextInt(size);
 			
+			// if the randomized values land on anything BUT -1 (empty space, water), restart the while (!shipPlaced) loop
 			if (board[row][col] != -1)
 				continue;
 
-			if (placeHorizontal) { // if ship was placed horizontal
+			// if the boolean value randomized to true, execute the next code
+			if (placeHorizontal) { // HORIZONTAL PLACEMENT
+				// if the randomized value for row PLUS the ships size is greater than the length of the board
+				// continue to the back of the while loop and start again
 				if (row + ships[i].size > size) {
 					continue;
 				}
-				
+				// if there is enough space to place the ship on the board and not go OFF, the next code will execute
 				else {
+					// initialize spaceFree boolean to true, spaceFree will determine if there is another ship in the way of placement
+					// if there is another ship in the way, the code will restart at the top of the while loop and try again
 					boolean spaceFree = true;
+					// for loop will run for the length of the ship (example 5 times for the aircraft carrier)
 					for (int j = 0; j < ships[i].size; j++) {
+						// testing if each randomized row + 1 and col are equal to -1 (empty space, water)
 						if (board[row+j][col] != -1) {
 							spaceFree = false;
 						}
@@ -212,35 +222,39 @@ public class gameboard {
 					
 
 			    if (!spaceFree)
-			      continue; // This will go to the next iteration of the while loop. (Generate a new position for the ship.)
+			      continue; // if the previous for loop determined there is a ship in the way, restart the while loop and try again
 			    
-			 // Your code will only get to here if it can be placed here.
-			 // place the ship at that location.
+			 // The code will only get to this point if the ship will not go off the board AND there is not another ship in the way of current ship
+			 // The following code places the ship on the board
 			    for (int j = 0; j < ships[i].size; j++) {
+			    	// shipIcon was initialized to -3 (aircraft carrier), and a -- counter will subtract to -4 then -5 and so on to change the value of that
+			    	// position to match that of the ship
 					board[row + j][col] = shipIcon;
 				}
-			    
+			    // since the ship passed all tests and was finally placed, change shipPlaced to true so the code moves to the next iteration of the for loop to place the next ship
 			    shipPlaced = true;
 			  } 
 			}
-			else { // If your ship was placed vertically.	    
+			
+			// if the boolean value for placeHorizontal is anything but true (false) then the following block of code will execute
+			else { // VERTICALLY	   
+				// code executes the exact same as the placeHorizontal, except it tests for vertical values instead of horizontal ones
 				if (col + ships[i].size > size) {
 					continue;
 				}
-				
+
 				else {
 					boolean spaceFree = true;
-			    
+
 			    for (int j = 0; j < ships[i].size; j++) {
 			      if (board[row][col+j] != -1)
-			      // if at any point there isn't free space then set spaceFree -> false
 			      spaceFree = false;
 			    }
 
 			    if (!spaceFree)
-			      continue; // This will go to the next iteration of your while loop. (Generate a new position for the ship.)
+			      continue; 
 
-			    // The code will only get to here if the ship can be placed here.
+
 				for (int j = 0; j < ships[i].size; j++) {	
 					board[row][col + j] = shipIcon;
 				}
@@ -265,8 +279,8 @@ public class gameboard {
 		System.out.println("Congratulations! You have sunk all the enemy ships.");
 		System.out.println("----------------------------------------------------");
 		System.out.println("|                                                  |");
-		System.out.println("|         			  YOU WIN!!                    |");
-		System.out.println("|                                       		   |");
+		System.out.println("|                   YOU WIN!!                      |");
+		System.out.println("|                                                  |");
 		System.out.println("----------------------------------------------------");
 		
 	}
@@ -276,8 +290,8 @@ public class gameboard {
 
 		System.out.println("----------------------------------------------------");
 		System.out.println("|                                                  |");
-		System.out.println("|                     YOU LOSE!!                   |");
-		System.out.println("|                       HA HA                      |");
+		System.out.println("|                   YOU LOSE!!                     |");
+		System.out.println("|                     HA HA                        |");
 		System.out.println("----------------------------------------------------");
 	}
 	
