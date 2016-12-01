@@ -3,7 +3,8 @@ package battleship;
 
 public class battleship {
 	public static void main(String[] args) {
-	actiongame action = new actiongame(); // creating a new object of actiongame.java
+		// creating a new object of actiongame.java
+	actiongame action = new actiongame(); 
 	
 	gameboard.getLogo(); // get the gameboard logo
 	action.startGame(); // call actiongame.java and start the game
