@@ -17,42 +17,41 @@ public class actiongame {
 	}
 	
 	public void playGame() {
-		// create a boolean for determing gameover
 		boolean gameOver; 
 		
 		// the following code will execute over and over until gameOver is set to true (when the game ends)
 		do {
 		turns++;	
-		// initializing gameOver to false
 		gameOver = false; 
+		
 		System.out.print("\n\nWhat row do you want to attack? (example: A or b): ");
-		char input = kb.next().charAt(0);
-		input = Character.toUpperCase(input); 
+		String input = kb.next();
+	
 		// The while loop will validate that the player entered a valid character
-		while (!Character.toString(input).matches("^[a-lA-L]") || Character.toString(input).length() >= 2)  {
+		while (!validate(input))  {
 			System.out.println("\nMake sure you are entering a valid single letter!");
 			System.out.print("\nWhat row do you want to attack? (example: A or b): ");
-			input = kb.next().charAt(0);
-			input = Character.toUpperCase(input); 
+			input = kb.next();
 		}
-		// capatalizes the character input for easier conversion to integer	
-		int row = getNumber(input); 
+		char charInput = input.charAt(0); 
+		Character.toUpperCase(charInput);
 		// passes the character input to getNumber() to convert the letter to a number for the board[][] array
+		int row = getNumber(charInput); 
+		
 		System.out.print("What column do you want to attack? (example: 1 or 5): ");
 		while (!kb.hasNextInt()) {
 			System.out.println("\nMake sure you are entering a valid NUMBER!\n");
 			System.out.print("What column do you want to attack? (example: 1 or 5): ");
 			kb.next();
 		}
-		int col = kb.nextInt() - 1;
 		// subtract 1 so we don't go out of bounds on the board[][] array
+		int col = kb.nextInt() - 1;
+		
 		// pass the converted row and column to fire method to attack the board
 		fire(row, col); 
 		gameboard.useMissiles();
-		// 
-		// System.out.printf("%nYou have hit %d ship(s) and had %d turn(s)", hits, turns);
+		
 		System.out.printf("%nYour hit accuracy is %.2f%%", getAccuracy(hits, turns));
-		// call printBoard() from the gameboard.java to re-print the board for another attack
 		gameboard.printBoard();
 		// once the int sunk value hits 0, all ships have been sunk, the player wins, call gameOverWin() from gameboard.java
 		if (gameboard.shipsAlive == 0) {
@@ -69,11 +68,10 @@ public class actiongame {
 	
 	
 	// The following code will determine what the player hit with their choice of attack
-	// the row and col values were passed inside the playGame() method
 	public void fire(int row, int col) {
 		// if the players attack landed on a -3 value, they hit the AIRCRAFT_CARRIER
 		if (gameboard.board[row][col] == -3){
-			// Create an int for ship sinking call sunk. Each time the players attack lands on a -3 value, subtract 1 from the ships size
+			// Create an int for ship sinking. Each time the players attack lands on a -3 value, subtract 1 from the ships size
 			// once the size hits 1, the ship is sunk
 			int sunk = gameboard.ships[0].size--;
 			hits++;
@@ -130,6 +128,10 @@ public class actiongame {
 			}
 		}
 		
+		else if (gameboard.board[row][col] == 0 || gameboard.board[row][col] == 1) {
+			System.out.print("\nYou already attacked there genius. Great job wasting a missile!\n");
+		}
+		
 		// if the players attack hit anything other than the values indicated above, then they missed hitting a ship
 		else {
 			System.out.print("You hit NOTHING! TRY AGAIN\n");
@@ -142,13 +144,17 @@ public class actiongame {
 	
 	}
 	
+	// divide how many hits by how many turns have happened, multiplied by 100 to get proper accuracy. (ie >1)
 	private double getAccuracy(double hits, double turns) {
 		double accuracy = (hits / turns) * 100;
 		return accuracy;
 	}
 	
+	// validate player input a single character within bounds
 	public static boolean validate(String s) {
 		if (s.length() > 1 || s.length() == 0)
+			return false;
+		if (!s.matches("^[a-lA-L]"))
 			return false;
 		else
 			return true;
