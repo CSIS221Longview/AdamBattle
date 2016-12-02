@@ -2,7 +2,7 @@ package battleship;
 import java.util.Scanner;
 
 
-public class actiongame {
+public class actiongame extends gameboard {
 	 // create new object of gameboard.java
 	gameboard gameboard = new gameboard();
 	Scanner kb = new Scanner(System.in);
@@ -10,13 +10,15 @@ public class actiongame {
 	private int turns = 0;
 	
 	
-	public void startGame() {
+	@SuppressWarnings("static-access")
+	protected void startGame() {
+		gameboard.getLogo();
 		gameboard.setDiff(); // call the setDiff() method from gameboard.java
 		gameboard.placeShips(); // call placeShips() method from gameboard.java
 		gameboard.printBoard(); // call the printBoard() method from gameboard.java
 	}
 	
-	public void playGame() {
+	protected void playGame() {
 		boolean gameOver; 
 		
 		// the following code will execute over and over until gameOver is set to true (when the game ends)
@@ -25,16 +27,15 @@ public class actiongame {
 		gameOver = false; 
 		
 		System.out.print("\n\nWhat row do you want to attack? (example: A or b): ");
-		String input = kb.next();
-	
+		String input = kb.next().toUpperCase();
+		
 		// The while loop will validate that the player entered a valid character
-		while (!validate(input))  {
+		while (!validate(input, gameboard.getDifficulty()))  {
 			System.out.println("\nMake sure you are entering a valid single letter!");
 			System.out.print("\nWhat row do you want to attack? (example: A or b): ");
 			input = kb.next();
 		}
 		char charInput = input.charAt(0); 
-		Character.toUpperCase(charInput);
 		// passes the character input to getNumber() to convert the letter to a number for the board[][] array
 		int row = getNumber(charInput); 
 		
@@ -68,7 +69,7 @@ public class actiongame {
 	
 	
 	// The following code will determine what the player hit with their choice of attack
-	public void fire(int row, int col) {
+	protected void fire(int row, int col) {
 		// if the players attack landed on a -3 value, they hit the AIRCRAFT_CARRIER
 		if (gameboard.board[row][col] == -3){
 			// Create an int for ship sinking. Each time the players attack lands on a -3 value, subtract 1 from the ships size
@@ -151,13 +152,23 @@ public class actiongame {
 	}
 	
 	// validate player input a single character within bounds
-	public static boolean validate(String s) {
+	private static boolean validate(String s, int diff) {
 		if (s.length() > 1 || s.length() == 0)
 			return false;
-		if (!s.matches("^[a-lA-L]"))
-			return false;
-		else
-			return true;
+		if (diff == 1) {
+			if (!s.matches("^[a-fA-F]"))
+				return false;
+		}
+		else if (diff == 2) {
+			if (!s.matches("^[a-iA-I]"))
+				return false;
+		}
+		
+		else if (diff == 3) {
+			if (!s.matches("^[a-lA-L]")) 
+				return false;
+		}
+		return true;
 	}
 	
 
