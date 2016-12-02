@@ -9,14 +9,15 @@ public class gameboard {
 	
 	int board[][]; // creating a 2d int array for printing of the game board
 	shipInfo[] ships = new shipInfo[5]; // creating an array of 5 for the 5 ships
-	private int BOARD_SIZE;
-	private int missiles;
-	public int shipsAlive = 5;
+	protected int BOARD_SIZE;
+	protected int missiles;
+	protected int shipsAlive = 5;
+	protected int difficulty;
 
 	
 	// getting difficulty settings from the player
-	public void setDiff() {
-		int difficulty;
+	protected void setDiff() {
+		
 		System.out.println("You have three difficulties to choose from");
 		System.out.println("   LEVEL        BOARD SIZE        MISSLES");
 		System.out.println("1. Beginner        6x6               30   ");
@@ -26,7 +27,7 @@ public class gameboard {
 		System.out.print("Select your board size by entering the number 1, 2, or 3:  ");
 		// this will determine if the user entered anything other than an integer number
 		while (!kb.hasNextInt()) {
-			System.out.println("\nYou have entered an a letter.\n");
+			System.out.println("\nMake sure you are entering a NUMBER!\n");
 			System.out.print("Select your board size by entering the number 1, 2, or 3:  ");
 			kb.next();
 		}
@@ -62,16 +63,20 @@ public class gameboard {
 	}
 	
 	// return the size of the board
-	private int getBoardSize() {
+	protected int getBoardSize() {
 		return BOARD_SIZE;
 	}
 	
-	public int getMissiles() {
+	protected int getMissiles() {
 		return missiles;
 	}
 	
-	public int useMissiles() {
+	protected int useMissiles() {
 		return missiles--;
+	}
+	
+	protected int getDifficulty() {
+		return difficulty;
 	}
 
 	// setting the board size to what the player wanted, 6, 9 or 12
@@ -91,7 +96,7 @@ public class gameboard {
 	}
 	
 	// printing of the board
-	public void printBoard() {
+	protected void printBoard() {
 		final char water = '~'; // This will allow all -1 values (water) to output as ~
 		final char miss = '*'; // This will allow all 0 values (miss) to output as *
 		final char hit = 'X';	// This will allow all 1 values (hit) to output as X
@@ -146,13 +151,13 @@ public class gameboard {
 	}
 	
 	
-	public class shipInfo {
+	protected class shipInfo {
 		public String name = "";
 		public String icon = "";
 		public int size = 0;
 	}
 	
-	public void createShips() {
+	protected void createShips() {
 		ships[0] = new shipInfo();
 		ships[1] = new shipInfo();
 		ships[2] = new shipInfo();
@@ -181,7 +186,7 @@ public class gameboard {
 
 	}
 	
-	public void placeShips() {
+	protected void placeShips() {
 		createShips(); // when placeShip() is called in actiongame.java, createShips() will execute and create the ships for the board
 		int size = getBoardSize();	 // assigning the board size to an int value for easier output
 		int shipIcon = -3; // initializing a value to -3 for placement of ships. A counter for -- is at the end of the placeShips() method which will subtract a number
@@ -280,7 +285,7 @@ public class gameboard {
 	
 	}
 		
-	public void gameOverWin() {
+	protected void gameOverWin() {
 		System.out.println("\n\n");
 		System.out.println("Congratulations! You have sunk all the enemy ships.");
 		System.out.println("----------------------------------------------------");
@@ -291,7 +296,7 @@ public class gameboard {
 		
 	}
 	
-	public void gameOverLoss() {
+	protected void gameOverLoss() {
 		System.out.println("\n\n");
 
 		System.out.println("----------------------------------------------------");
@@ -303,11 +308,11 @@ public class gameboard {
 	
 		
 	// converts the numbers to letters (for the first column going down)
-	public char getLetter(int i){
+	private char getLetter(int i){
 		  return (char) (i + 64);
 		}
 	
-	public static void getLogo() {
+	protected static void getLogo() {
 		System.out.println("----------------------------------------------------");
 		System.out.println("|                                                  |");
 		System.out.println("|             WELCOME TO BATTLESHIP                |");
