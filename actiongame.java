@@ -26,13 +26,24 @@ public class actiongame {
 		// initializing gameOver to false
 		gameOver = false; 
 		System.out.print("\n\nWhat row do you want to attack? (example: A or b): ");
-		
 		char input = kb.next().charAt(0);
 		input = Character.toUpperCase(input); 
+		// The while loop will validate that the player entered a valid character
+		while (!Character.toString(input).matches("^[a-lA-L]") || Character.toString(input).length() >= 2)  {
+			System.out.println("\nMake sure you are entering a valid single letter!");
+			System.out.print("\nWhat row do you want to attack? (example: A or b): ");
+			input = kb.next().charAt(0);
+			input = Character.toUpperCase(input); 
+		}
 		// capatalizes the character input for easier conversion to integer	
 		int row = getNumber(input); 
 		// passes the character input to getNumber() to convert the letter to a number for the board[][] array
-		System.out.print("What column do you want to attack? (example: 1 or 5): ");		
+		System.out.print("What column do you want to attack? (example: 1 or 5): ");
+		while (!kb.hasNextInt()) {
+			System.out.println("\nMake sure you are entering a valid NUMBER!\n");
+			System.out.print("What column do you want to attack? (example: 1 or 5): ");
+			kb.next();
+		}
 		int col = kb.nextInt() - 1;
 		// subtract 1 so we don't go out of bounds on the board[][] array
 		// pass the converted row and column to fire method to attack the board
@@ -70,7 +81,7 @@ public class actiongame {
 			// change the value where the player attacked to a 1, meaning a HIT
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
-				System.out.printf("%n You have sunk the %s Aircraft Carrier.", gameboard.ships[0].name);
+				System.out.printf("%n****** You have sunk the %s Aircraft Carrier.", gameboard.ships[0].name);
 				gameboard.shipsAlive--;
 			}
 		}
@@ -81,7 +92,7 @@ public class actiongame {
 			System.out.printf("%nYou have hit the %s", gameboard.ships[1].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
-				System.out.printf("%n You have sunk the %s Battleship.", gameboard.ships[1].name);
+				System.out.printf("%n****** You have sunk the %s Battleship.", gameboard.ships[1].name);
 				gameboard.shipsAlive--;
 			}
 		}
@@ -92,7 +103,7 @@ public class actiongame {
 			System.out.printf("%nYou have hit the %s", gameboard.ships[2].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
-				System.out.printf("%nYou have sunk the %s Destroyer.", gameboard.ships[2].name);
+				System.out.printf("%n****** You have sunk the %s Destroyer.", gameboard.ships[2].name);
 				gameboard.shipsAlive--;
 			}
 		}
@@ -103,7 +114,7 @@ public class actiongame {
 			System.out.printf("%nYou have hit the %s", gameboard.ships[3].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
-				System.out.printf("%n You have sunk the %s Submarine.", gameboard.ships[3].name);
+				System.out.printf("%n****** You have sunk the %s Submarine.", gameboard.ships[3].name);
 				gameboard.shipsAlive--;
 			}
 		}
@@ -114,14 +125,14 @@ public class actiongame {
 			System.out.printf("%nYou have hit the %s", gameboard.ships[4].name);
 			gameboard.board[row][col] = 1;
 			if (sunk == 1) {
-				System.out.printf("%n You have sunk the %s Patrol Boat.", gameboard.ships[4].name);
+				System.out.printf("%n****** You have sunk the %s Patrol Boat.", gameboard.ships[4].name);
 				gameboard.shipsAlive--;
 			}
 		}
 		
 		// if the players attack hit anything other than the values indicated above, then they missed hitting a ship
 		else {
-			System.out.print("You hit NOTHING! TRY AGAIN");
+			System.out.print("You hit NOTHING! TRY AGAIN\n");
 			// assign the value of the board where the player attacked to 0, meaning a miss
 			gameboard.board[row][col] = 0;
 		}
@@ -134,6 +145,13 @@ public class actiongame {
 	private double getAccuracy(double hits, double turns) {
 		double accuracy = (hits / turns) * 100;
 		return accuracy;
+	}
+	
+	public static boolean validate(String s) {
+		if (s.length() > 1 || s.length() == 0)
+			return false;
+		else
+			return true;
 	}
 	
 
