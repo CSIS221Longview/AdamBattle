@@ -62,7 +62,6 @@ public class gameboard {
 		System.out.printf("%nGameboard is set to %dx%d%n", getBoardSize(), getBoardSize());
 	}
 	
-	// return the size of the board
 	protected int getBoardSize() {
 		return BOARD_SIZE;
 	}
@@ -157,6 +156,7 @@ public class gameboard {
 		public int size = 0;
 	}
 	
+	// Used inspiration from Nickwell in class for createShips()
 	protected void createShips() {
 		ships[0] = new shipInfo();
 		ships[1] = new shipInfo();
@@ -312,7 +312,7 @@ public class gameboard {
 		  return (char) (i + 64);
 		}
 	
-	protected static void getLogo() {
+	protected void getLogo() {
 		System.out.println("----------------------------------------------------");
 		System.out.println("|                                                  |");
 		System.out.println("|             WELCOME TO BATTLESHIP                |");
