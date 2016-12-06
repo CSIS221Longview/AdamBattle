@@ -1,7 +1,7 @@
 package battleship;
 
 
-public class battleship extends actiongame {
+public class battleship {
 	public static void main(String[] args) {
 		// creating a new object of actiongame.java
 	actiongame action = new actiongame(); 
