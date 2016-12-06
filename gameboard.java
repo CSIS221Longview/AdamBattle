@@ -96,9 +96,9 @@ public class gameboard {
 	
 	// printing of the board
 	protected void printBoard() {
-		final char water = '~'; // This will allow all -1 values (water) to output as ~
-		final char miss = '*'; // This will allow all 0 values (miss) to output as *
-		final char hit = 'X';	// This will allow all 1 values (hit) to output as X
+		final char water = '~'; 
+		final char miss = '*'; 
+		final char hit = 'X';	
 		
 		
 		
@@ -122,17 +122,17 @@ public class gameboard {
 			System.out.printf("%3c", getLetter(i+1));
 			
 			for (int j = 0; j < getBoardSize(); j++) {
-				if (board[i][j] == -1)
+				if (board[i][j] == -1 || board[i][j] == -3 || board[i][j] == -4 || board[i][j] == -5 || board[i][j] == -6 || board[i][j] == -7)
 					System.out.printf("%3c", water);
 				if (board[i][j] == 0)
 					System.out.printf("%3c", miss);
 				if (board[i][j] == 1)
 					System.out.printf("%3c", hit);
 					
-				// 
-				// FOR TEST PRINTING ONLY, WILL COMMENT OUT LATER
+			
+				// FOR TEST PRINTING ONLY, UNCOMMENT THIS SECTION TO SEE SHIP PLACEMENT (OR CHEATING)
 				//
-				if (board[i][j] == -3)
+				/*if (board[i][j] == -3)
 					System.out.printf("%3s", ships[0].icon);
 				if (board[i][j] == -4)
 					System.out.printf("%3s", ships[1].icon);
@@ -141,8 +141,7 @@ public class gameboard {
 				if (board[i][j] == -6)
 					System.out.printf("%3s", ships[3].icon);
 				if (board[i][j] == -7)
-					System.out.printf("%3s", ships[4].icon);
-				//
+					System.out.printf("%3s", ships[4].icon); */
 				
 				System.out.print("|");
 			}
@@ -178,11 +177,11 @@ public class gameboard {
 		
 		// THE FOLLOWING WILL BE COMMENTED OUT FOR FINAL GAME
 		// Uncomment the ships[].icon if you want to see the icons print with the board game (for cheating)
-		ships[0].icon = "A"; // A for Aircraft Carrier
+		/*ships[0].icon = "A"; // A for Aircraft Carrier
 		ships[1].icon = "B"; // B for Battleship
 		ships[2].icon = "D"; // D for Destroyer
 		ships[3].icon = "S"; // S for Submarine
-		ships[4].icon = "P"; // P for Patrol Boat
+		ships[4].icon = "P"; // P for Patrol Boat */
 
 	}
 	
