@@ -2,20 +2,20 @@ package battleship;
 import java.util.Scanner;
 
 
-public class actiongame extends gameboard {
-	 // create new object of gameboard.java
+public class actiongame  {
+
 	gameboard gameboard = new gameboard();
 	Scanner kb = new Scanner(System.in);
 	private int hits = 0;
 	private int turns = 0;
+
 	
-	
-	@SuppressWarnings("static-access")
+	// Get the logo, set difficulty, place the ships, then print the board
 	protected void startGame() {
 		gameboard.getLogo();
-		gameboard.setDiff(); // call the setDiff() method from gameboard.java
-		gameboard.placeShips(); // call placeShips() method from gameboard.java
-		gameboard.printBoard(); // call the printBoard() method from gameboard.java
+		gameboard.setDiff(); 
+		gameboard.placeShips(); 
+		gameboard.printBoard(); 
 	}
 	
 	protected void playGame() {
@@ -39,17 +39,33 @@ public class actiongame extends gameboard {
 		// passes the character input to getNumber() to convert the letter to a number for the board[][] array
 		int row = getNumber(charInput); 
 		
-		System.out.print("What column do you want to attack? (example: 1 or 5): ");
-		while (!kb.hasNextInt()) {
-			System.out.println("\nMake sure you are entering a valid NUMBER!\n");
-			System.out.print("What column do you want to attack? (example: 1 or 5): ");
-			kb.next();
-		}
-		// subtract 1 so we don't go out of bounds on the board[][] array
-		int col = kb.nextInt() - 1;
+		// determine the column the player wants to attack
+		int col = 0;
+		while (col == 0) {
+			try {
+				System.out.print("What column do you want to attack? (example: 1 or 5): ");
+				String column = kb.next().toUpperCase();
 		
-		// pass the converted row and column to fire method to attack the board
-		fire(row, col); 
+		
+				while (!validNumber(column, gameboard.getDifficulty())) {
+					System.out.println("\nMake sure you are entering a valid NUMBER!\n");
+					System.out.print("What column do you want to attack? (example: 1 or 5): ");
+					column = kb.next();
+				}
+				col = Integer.parseInt(column) - 1;
+				// pass the converted row and column to fire method to attack the board
+				fire(row, col); 
+			}
+
+			catch(NumberFormatException exception) {
+				System.out.println("\nPlease enter an actual integer value");
+				continue;
+			}
+		}
+	
+		
+		
+		 
 		gameboard.useMissiles();
 		
 		System.out.printf("%nYour hit accuracy is %.2f%%", getAccuracy(hits, turns));
@@ -69,7 +85,7 @@ public class actiongame extends gameboard {
 	
 	
 	// The following code will determine what the player hit with their choice of attack
-	protected void fire(int row, int col) {
+	private void fire(int row, int col) {
 		// if the players attack landed on a -3 value, they hit the AIRCRAFT_CARRIER
 		if (gameboard.board[row][col] == -3){
 			// Create an int for ship sinking. Each time the players attack lands on a -3 value, subtract 1 from the ships size
@@ -151,6 +167,27 @@ public class actiongame extends gameboard {
 		return accuracy;
 	}
 	
+	private static boolean validNumber(String column, int diff) {
+		int col = Integer.parseInt(column);
+		boolean isValid = false;
+		if (diff == 1) {
+			if (col >= 1 && col <= 6)
+				isValid = true;
+		}
+		else if (diff == 2) {
+			if (col >= 1 && col <= 9)
+				isValid = true;
+		}
+		else if (diff == 3) {
+			if (col >= 1 && col <= 12)
+				isValid = true;
+		}
+		return isValid;
+	}
+	
+	
+	
+	
 	// validate player input a single character within bounds
 	private static boolean validate(String s, int diff) {
 		if (s.length() > 1 || s.length() == 0)
@@ -170,8 +207,6 @@ public class actiongame extends gameboard {
 		}
 		return true;
 	}
-	
-
 	
 	
 	// change the character input for first user attack prompt to a number for the board[][] array
