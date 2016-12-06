@@ -40,30 +40,19 @@ public class actiongame  {
 		int row = getNumber(charInput); 
 		
 		// determine the column the player wants to attack
-		int col = 0;
-		while (col == 0) {
-			try {
+		System.out.print("What column do you want to attack? (example: 1 or 5): ");
+		String column = kb.next().toUpperCase();
+		
+		while (!validNumber(column, gameboard.getDifficulty())) {
+				System.out.println("\nMake sure you are entering a valid NUMBER!\n");
 				System.out.print("What column do you want to attack? (example: 1 or 5): ");
-				String column = kb.next().toUpperCase();
-		
-		
-				while (!validNumber(column, gameboard.getDifficulty())) {
-					System.out.println("\nMake sure you are entering a valid NUMBER!\n");
-					System.out.print("What column do you want to attack? (example: 1 or 5): ");
-					column = kb.next();
-				}
-				col = Integer.parseInt(column) - 1;
-				// pass the converted row and column to fire method to attack the board
-				fire(row, col); 
-			}
-
-			catch(NumberFormatException exception) {
-				System.out.println("\nPlease enter an actual integer value");
-				continue;
-			}
+				column = kb.next();
 		}
-	
+				
+		int col = Integer.parseInt(column) - 1;	
+		fire(row, col);
 		
+		// pass the converted row and column to fire method to attack the board		
 		
 		 
 		gameboard.useMissiles();
@@ -167,20 +156,26 @@ public class actiongame  {
 		return accuracy;
 	}
 	
+
 	private static boolean validNumber(String column, int diff) {
-		int col = Integer.parseInt(column);
 		boolean isValid = false;
-		if (diff == 1) {
-			if (col >= 1 && col <= 6)
-				isValid = true;
-		}
-		else if (diff == 2) {
-			if (col >= 1 && col <= 9)
-				isValid = true;
-		}
-		else if (diff == 3) {
-			if (col >= 1 && col <= 12)
-				isValid = true;
+		if (column.matches("^[a-zA-Z]*$"))
+			isValid = false;
+		else {
+			int col = Integer.parseInt(column);
+		
+			if (diff == 1) {
+				if (col >= 1 && col <= 6)
+					isValid = true;
+			}
+			else if (diff == 2) {
+				if (col >= 1 && col <= 9)
+					isValid = true;
+			}
+			else if (diff == 3) {
+				if (col >= 1 && col <= 12)
+					isValid = true;
+			}
 		}
 		return isValid;
 	}
